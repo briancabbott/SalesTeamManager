@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GraphQL" Version="8.0.2" />
     <PackageReference Include="GraphQL.AspNet" Version="1.4.1" />
+    <PackageReference Include="GraphQL.MicrosoftDI" Version="8.0.2" />
+    <PackageReference Include="GraphQL.Server.All" Version="8.0.2" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="8.0.2" />
+    <PackageReference Include="GraphQL.Tools" Version="1.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.7.24406.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
@@ -20,8 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SalesTeam.Analytics\SalesTeam.Analytics.csproj" />
     <ProjectReference Include="..\SalesTeam.Common\SalesTeam.Common.csproj" />
     <ProjectReference Include="..\SalesTeam.DataAccess\SalesTeam.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SalesRecords.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

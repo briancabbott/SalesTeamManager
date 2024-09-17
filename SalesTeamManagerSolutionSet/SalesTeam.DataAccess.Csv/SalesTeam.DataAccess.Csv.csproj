@@ -12,6 +12,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SalesTeam.Common\SalesTeam.Common.csproj" />
+    <ProjectReference Include="..\SalesTeam.DataAccess\SalesTeam.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SalesRecords.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

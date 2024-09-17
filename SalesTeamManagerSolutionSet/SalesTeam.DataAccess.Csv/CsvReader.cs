@@ -8,6 +8,72 @@ using CsvHelper;
 
 namespace SalesTeam.DataAccess.Csv
 {
+    public class CsvReader
+    {
+        public CsvReader()
+        {
+
+        }
+
+        public List<SalesRecord> ReadCsvFromFile(string path)
+        {
+            using StreamReader reader = new(path);
+            string text = reader.ReadToEnd();
+            return ReadCsv(text);
+        }
+        public List<SalesRecord> ReadCsv(string content)
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+            using var reader = new StringReader(content);
+            using var csv = new CsvHelper.CsvReader(reader, config);
+
+            csv.Context.TypeConverterCache.AddConverter<DateTime>(new CustomDateTimeConverter());
+            csv.Context.RegisterClassMap<SalesRecordMap>();
+
+            var records = csv.GetRecords<SalesRecord>();
+            var l = new List<SalesRecord>();
+            foreach (var record in records)
+            {
+                l.Add(record);
+            }
+            return l;
+        }
+
+        public void WriteCsvToFile(List<SalesRecord> records, string path)
+        {
+            CsvHelper.CsvWriter csv = new CsvWriter(new StreamWriter(path), CultureInfo.InvariantCulture);
+            csv.Context.TypeConverterCache.AddConverter<DateTime>(new CustomDateTimeConverter());
+            csv.Context.RegisterClassMap<SalesRecordMap>();
+            csv.WriteRecords(records);
+        }
+
+        public void WriteCsv(List<SalesRecord> records)
+        {
+            WriteCsvToFile(records, GeneralConfiguration.Current().CsvFilePath);
+        }
+
+        public class SalesRecordMap : ClassMap<SalesRecord>
+        {
+            public SalesRecordMap()
+            {
+                Map(m => m.Region).Name("Region");
+                Map(m => m.Country).Name("Country");
+                Map(m => m.ItemType).Name("Item Type");
+                Map(m => m.SalesChannel).Name("Sales Channel");
+                Map(m => m.OrderPriority).Name("Order Priority");
+                Map(m => m.OrderDate).Name("Order Date").TypeConverterOption.Format("MM/dd/yyyy");
+                Map(m => m.OrderID).Name("Order ID");
+                Map(m => m.ShipDate).Name("Ship Date").TypeConverterOption.Format("MM/dd/yyyy");
+                Map(m => m.UnitsSold).Name("Units Sold");
+                Map(m => m.UnitPrice).Name("Unit Price");
+                Map(m => m.UnitCost).Name("Unit Cost");
+                Map(m => m.TotalRevenue).Name("Total Revenue");
+                Map(m => m.TotalCost).Name("Total Cost");
+                Map(m => m.TotalProfit).Name("Total Profit");
+            }
+        }
+    }
+
     public class CustomDateTimeConverter : DefaultTypeConverter
     {
         public override string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
@@ -52,58 +118,6 @@ namespace SalesTeam.DataAccess.Csv
                 }
             }
             return DateTime.MinValue;
-        }
-    }
-
-    public class CsvReader
-    {
-        public CsvReader()
-        {
-        }
-
-        public List<SalesRecord> ReadCsvFromFile(string path)
-        {
-            using StreamReader reader = new(path);
-            string text = reader.ReadToEnd();
-            return ReadCsv(text);
-        }
-        public List<SalesRecord> ReadCsv(string content)
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture);
-            using var reader = new StringReader(content);
-            using var csv = new CsvHelper.CsvReader(reader, config);
-
-            csv.Context.TypeConverterCache.AddConverter<DateTime>(new CustomDateTimeConverter());
-            csv.Context.RegisterClassMap<SalesRecordMap>();
-
-            var records = csv.GetRecords<SalesRecord>();
-            var l = new List<SalesRecord>();
-            foreach (var record in records)
-            {
-                l.Add(record);
-            }
-            return l;
-        }
-
-        public class SalesRecordMap : ClassMap<SalesRecord>
-        {
-            public SalesRecordMap()
-            {
-                Map(m => m.Region).Name("Region");
-                Map(m => m.Country).Name("Country");
-                Map(m => m.ItemType).Name("Item Type");
-                Map(m => m.SalesChannel).Name("Sales Channel");
-                Map(m => m.OrderPriority).Name("Order Priority");
-                Map(m => m.OrderDate).Name("Order Date").TypeConverterOption.Format("MM/dd/yyyy");
-                Map(m => m.OrderID).Name("Order ID");
-                Map(m => m.ShipDate).Name("Ship Date").TypeConverterOption.Format("MM/dd/yyyy");
-                Map(m => m.UnitsSold).Name("Units Sold");
-                Map(m => m.UnitPrice).Name("Unit Price");
-                Map(m => m.UnitCost).Name("Unit Cost");
-                Map(m => m.TotalRevenue).Name("Total Revenue");
-                Map(m => m.TotalCost).Name("Total Cost");
-                Map(m => m.TotalProfit).Name("Total Profit");
-            }
         }
     }
 }

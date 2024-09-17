@@ -17,9 +17,9 @@ namespace SalesTeam.Common
         public DateTime ShipDate { get; set; }
         public decimal UnitsSold { get; set; }
         public decimal UnitPrice { get; set; }
-        public  decimal  UnitCost { get; set; }
-        public decimal   TotalRevenue { get; set; }
-        public  decimal      TotalCost { get; set; }
+        public  decimal UnitCost { get; set; }
+        public decimal TotalRevenue { get; set; }
+        public  decimal TotalCost { get; set; }
         public decimal TotalProfit { get; set; }
 
 
@@ -31,10 +31,7 @@ namespace SalesTeam.Common
             js.WriteIndented = true;
             js.IncludeFields = true;
             return JsonSerializer.Serialize(this, this.GetType(), js);
-
-
             //return $"{{Region: {Region}, Country: {Country}, ItemType: {ItemType}, SalesChannel: {SalesChannel}, OrderPriority: {OrderPriority}, OrderDate: {OrderDate}, OrderID: {OrderID}, ShipDate: {ShipDate}, UnitsSold: {UnitsSold}, UnitPrice: {UnitPrice}, UnitCost: {UnitCost}, TotalRevenue: {TotalRevenue}, TotalCost: {TotalCost}, TotalProfit: {TotalProfit} }}";
         }
-
     }
 }

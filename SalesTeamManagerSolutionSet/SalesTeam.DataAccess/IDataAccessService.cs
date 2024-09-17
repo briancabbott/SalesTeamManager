@@ -16,6 +16,5 @@ namespace SalesTeam.DataAccess
         void RemoveSalesRecord(int orderId);
         SalesRecord GetSalesRecord(int orderId);
         List<SalesRecord> GetSalesRecords();
-
     }
 }
